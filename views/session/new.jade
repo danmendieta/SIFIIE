@@ -1,0 +1,36 @@
+!!!
+html
+  head
+    meta(charset="utf-8")
+    link(rel="stylesheet", type="text/css", href="/stylesheets")
+    script(type="text/javascript", src="/javascripts")
+    script(type="text/javascript", src="/javascripts")
+    
+  body.home-new.logged-out
+    //- agregar el resto de los elementos
+    //- Encabezados
+    //- agregar los elementos js o .css en sus respectivas carpetas
+    //- Banners de las noticias
+    //- El pie donde corresponde
+    //- Usar los colores de cgfie
+    //- Cambiar las clases, estan las que se quedaron de un proyecto previo
+    //*********** ESTE LOGIN SE PUEDE MONTAR EN EL INDEX DE LA PAGINA EN UN MODAL(BOOTSTRAP) UNICAMENTE VALIDAR EL ACTION Y LAS URLS SEAN LAS CORRECTAS
+    article.container
+      div.accounts-form(id="login")
+        h3 Accede a tu cuenta
+        p Usuario "admin" & Password "admin" 
+        form(action="/sessions", id="login-form", method="post", autocomplete="off")
+          div.all-errors
+            - if(typeof(message)!="undefined")
+             p#warn= message
+          div.input
+            input(type="usuario", placeholder="Usuario", name="usuario", maxlength="30", id="usuario", required="required")
+          div.input
+            input(type="password", placeholder="Contraseña", name="password", id="password", required="required")
+          div.actions.clearfix
+            input.btn.btn-green(type="submit",value="Entrar")
+      p.note
+        a(href="/accounts/password/reset/") Olvidaste tu contraseña?
+        &middot;
+        a(href="/signup") Registrate 
+        //End article.container
