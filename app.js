@@ -31,14 +31,18 @@ var crypto = require('crypto')
 /*************************/
 
   var EscuelasSchema = mongoose.Schema({
-    name:          String,
-    lastname:      String,
-    email:         String,
-    password:      String,
-    register:      {type: Date, default:Date.now},
-    status:        Number//0-Sin Confirmar, 1-Trial, 2-Activo, 3-Sin Pago, 4-Desactivado
+    clave:                    Number,
+    nombre:               String,
+    siglas:                  String,
+    dependencia:        Number,
+    responsable:         String,
+    cargo:                   String,
+    direccion:              String,
+    coordenadas:        String,
+    fecha_registro:      {type: Date, default:Date.now}
+    
   });
-  var EscuelasCollection= db.model('escuelas',EscuelasSchema);
+  var EscuelasDB= db.model('escuelas',EscuelasSchema);
 
 
 
@@ -70,25 +74,55 @@ app.get('/sifiie', protegido,  function (req, res){
 
 
 app.get('/sifiie/escuelas', protegido,  function (req, res){
-    var generalError = null;
-    var escuelasobject = null
     //Metodo que ejecuta la busqueda de todas las escuelas en la coleccion en MongoDB
-    EscuelasCollection.find().lean().exec( function(error, results){        
+    EscuelasDB.find().lean().exec( function(error, results){        
         if (error){
             //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
-            res.render('sifiie/index', { layout:false, error:generalError } )
+            res.render('sifiie/index', { layout:false, error:error } )
+            console.log(error);
         }else {
             //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
-            res.render('sifiie/index', { layout:false, listaescuelas:escuelasobject } )
+            res.render('sifiie/index', { layout:false, listaescuelas:results } );
+            console.log(results);
         }
     });
+});
+
+app.post('/sifiie/escuelas/borrar', protegido, function (req, res){
+
+});
+
+app.post('/sifiie/escuelas/nuevo', protegido, function (req, res){
+  //Se genera el nuevo objeto que se va a insertar en la DB
+  var escuela_nueva =new EscuelasDB({
+    clave:                    req.param('clave'),
+    nombre:               req.param('nombre'),
+    siglas:                  req.param('siglas'),
+    dependencia:       req.param('dependencia'), //Number
+    responsable:        req.param('responsable'),
+    cargo:                  req.param('cargo'),
+    direccion:            req.param('direccion'),
+    coordenadas:      req.param('coordenadas')
+  });
+  //Mongoose cuenta con una funcion save que parte del objeto creado previamente
+  escuela_nueva.save( function (error){
+    if(!error){
+      res.send( { escuela_nueva: {message: 'Escuela creada exitosamente' } });
+    }else{
+      res.send( {escuela_nueva: {error:'Error al guardar escuela | '+error} });
+    }
+  });
+
+
 });
 
 
 
 
 
-
+/*
+*
+*/
 
 app.get('/session/new', function(req,res){// New Session
   res.render('session/new', {
@@ -126,14 +160,15 @@ app.get('/session/new', function(req,res){// New Session
 
 
 
+/**
+* Funcion que valida si existe una sesion con un nobre de usuario, si no es así redirige a la pantalla de inicio de sesion
+*/
   function protegido(req, res, next){
     if(req.session.user){
-      //getStores({id:req.session.user._id});
       next();
     }else{
       console.log('URL='+req.url);
       res.redirect('/session/new?redir='+req.url);
-      //res.redirect('/app');
     }
   }
 
