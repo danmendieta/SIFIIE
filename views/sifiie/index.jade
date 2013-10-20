@@ -9,7 +9,7 @@ html
 
     script(src="/javascripts/datatables/js/jquery.js")
     script(src="/javascripts/datatables/js/jquery.dataTables.js")
-    script      
+    script.      
       $(document).ready(function() {
         $('#escuelas').dataTable();
       } );
@@ -17,20 +17,32 @@ html
 
   
   body
+
+    div
+      a(href="/sessions/destroy") Salir
+
     div
       h2 Menú
       ul
+        li
+          a algo 
+        li
+          a algo  
         li 
-          a(href="/sifiie/escuelas") Escuelas
+          a(href="/sifiie/escuelas") Unidades
         li 
           a(href="#") Opciones
+    
+    br 
+    br
+    br
+    br
+
     div#registro-escuelas
       form(action='/sifiie/escuelas/nuevo', method='POST')
         fieldset
           if(typeof(escuela_nueva)!="undefined")
               p #{escuela_nueva.message}
-             
-
           input(type="text", placeholder="Clave Ejem: 1", id="clave", name="clave")
           input(type="text", placeholder="Nombre Escuela", id="nombre", name="nombre")
           input(type="text", placeholder="Siglas", id="siglas", name="siglas")
@@ -50,6 +62,11 @@ html
           input(type="text", placeholder="Dirección", id="direccion", name="direccion")
           input(type="text", placeholder="Coordenadas", id="coordenadas", name="coordenadas")
           input(type="submit", value="Guardar")
+    
+    br 
+    br
+    br
+    br
 
 
  -if(typeof(listaescuelas)!="undefined")
@@ -90,5 +107,3 @@ html
 
 
 
-    div
-      a(href="/sessions/destroy") Salir

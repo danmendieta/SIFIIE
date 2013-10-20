@@ -11,6 +11,8 @@ var db = mongoose.createConnection('108.166.84.122', 'SIFIIEDB');
 var app = module.exports = express.createServer();
 var MemoryStore= require('express/node_modules/connect/lib/middleware/session/memory');
 var crypto = require('crypto')
+var ObjectId = mongoose.Types.ObjectId
+
 
 // Configuration
 
@@ -95,7 +97,7 @@ app.post('/sifiie/escuelas/borrar', protegido, function (req, res){
 app.post('/sifiie/escuelas/nuevo', protegido, function (req, res){
   //Se genera el nuevo objeto que se va a insertar en la DB
   var escuela_nueva =new EscuelasDB({
-    clave:                    req.param('clave'),
+    clave:                   req.param('clave'),
     nombre:               req.param('nombre'),
     siglas:                  req.param('siglas'),
     dependencia:       req.param('dependencia'), //Number
@@ -107,26 +109,65 @@ app.post('/sifiie/escuelas/nuevo', protegido, function (req, res){
   //Mongoose cuenta con una funcion save que parte del objeto creado previamente
   escuela_nueva.save( function (error){
     if(!error){
-      res.send( { escuela_nueva: {message: 'Escuela creada exitosamente' } });
+          EscuelasDB.find().lean().exec( function(error, results){        
+            if (!error){
+                //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
+                res.render('sifiie/index', { layout:false, error:error, escuela_nueva: {message: 'Error al guardar unidad' }  } )
+                console.log(error);
+            }else {
+                //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
+                res.render('sifiie/index', { layout:false, listaescuelas:results, escuela_nueva: {message: 'Escuela creada exitosamente' }  } );
+                console.log(results);
+            }
+        });
+       
     }else{
-      res.send( {escuela_nueva: {error:'Error al guardar escuela | '+error} });
+
+          EscuelasDB.find().lean().exec( function(error, results){        
+            if (error){
+                //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
+                res.render('sifiie/index', { layout:false, error:error, escuela_nueva: { error:'Error al guardar escuela | '+error}  } )
+                console.log(error);
+            }else {
+                //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
+                res.render('sifiie/index', { layout:false, listaescuelas:results, escuela_nueva: {error:'Error al guardar escuela | '+error}  } );
+                console.log(results);
+            }
+        });
+      
     }
   });
+});
 
+app.post('/sifiie/escuelas/editar', function (req, res){
+  var escuela_actualizada = {
+    clave:                   req.param('clave'),
+    nombre:               req.param('nombre'),
+    siglas:                  req.param('siglas'),
+    dependencia:       req.param('dependencia'), //Number
+    responsable:        req.param('responsable'),
+    cargo:                  req.param('cargo'),
+    direccion:            req.param('direccion'),
+    coordenadas:      req.param('coordenadas')
+  }
+  EscuelasDB.update( {_id:req.param('id') }, escuela_actualizada).exec( function ( error, total_afectaciones) {
+    if(!error){
+      res.send
+    }else{
 
+    }
+  });
 });
 
 
 
-
-
 /*
-*
+*   EL SIGUIENTE BLOQUE DE PETICIONES MANEJA LAS SESIONES
 */
 
 app.get('/session/new', function(req,res){// New Session
   res.render('session/new', {
-    title:'POSTower',
+    title:'SIFIIE',
     layout:false,
     locals: {
       redir: req.query.redir,
@@ -157,8 +198,6 @@ app.get('/session/new', function(req,res){// New Session
       }//end else-if 
 
   });
-
-
 
 /**
 * Funcion que valida si existe una sesion con un nobre de usuario, si no es así redirige a la pantalla de inicio de sesion
