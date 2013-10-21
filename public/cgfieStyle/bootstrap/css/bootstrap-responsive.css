@@ -84,12 +84,15 @@
 }
 
 
+
+
 }
 
 @media (max-width: 767px) {
   .hidden-desktop {
     display: none; !important;
   }
+
   .visible-desktop {
     display: inherit !important;
   }
@@ -119,6 +122,8 @@
 }
 
 @media (min-width: 1200px) {
+
+
   .row {
     margin-left: -30px;
     *zoom: 1;
