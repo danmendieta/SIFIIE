@@ -1,15 +1,15 @@
-div.headertopSmall
-      Inicio Inicio - Mapa de Sitio - Intraneta - SIFIIE - Correo electrónico
-div.headertopMiddle
-  img(src="images/encIPN2.png")
+div!=partial('header')
 div.wall
   div.encWall
     div.row-fluid.show-grid
-      div.span10
+      div.span9
         img(src="images/enc2.png")
-      div.span2
+      div.span3
         div.cont2
-          a(href="/sifiie" class="btn btn-large btn-block btn-info")
-            Success Acceder
+          a(href="#loginApp" role="button" class="btn btn-large btn-block btn-info" data-toggle="modal")
+            i.fui-radio-checked  &nbsp;Acceder
+ 
   div.conWall
     img(src="images/cgfie.png")
+div!=partial('session/newModal')
+div!=partial('js')

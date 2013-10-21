@@ -227,6 +227,7 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: #333333;
+  background-image: url("../img/bright.png");
   background-color: #ededed;
 }
 
@@ -2046,7 +2047,39 @@ table {
   padding: 4px 5px;
 }
 
+.tableED{
+  width: 100%;
+  font-size: 13px;
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  *border-collapse: collapse;
+  border-left: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+}
+
+.tableED th,
+.tableED td {
+  border-bottom:1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+}
+
+.tableED tr{
+  height: 30px;
+  border-left: 1px solid #dddddd;
+}
+
+
+.tableED tbody tr:hover > td,
+.tableED tbody tr:hover > th {
+  color: #fff;
+  background-color: #0d92c3;
+}
+
+
 .table-bordered {
+
+  font-size: 5px;
   border: 1px solid #dddddd;
   border-collapse: separate;
   *border-collapse: collapse;
@@ -2056,8 +2089,9 @@ table {
           border-radius: 4px;
 }
 
+
 .table-bordered th,
-.table-bordered td {
+.table-bordered td{
   border-left: 1px solid #dddddd;
 }
 
@@ -3566,6 +3600,21 @@ button.btn::-moz-focus-inner,
 input[type="submit"].btn::-moz-focus-inner {
   padding: 0;
   border: 0;
+}
+
+button.btn.btn-large{
+  font-size: 13px;
+  background-color: #0694c8;
+  width: 160px;
+  height: 50px;
+}
+
+
+button.btn.btn-large.dropdown-toggle{
+  font-size: 15px;
+  background-color: #0077a3;
+  width: 50px;
+  height: 40px;
 }
 
 button.btn.btn-large,
@@ -5213,6 +5262,7 @@ input[type="submit"].btn.btn-mini {
   z-index: 1050;
   width: 560px;
   margin-left: -280px;
+  background-image: url("../img/bright.png");
   background-color: #ffffff;
   border: 1px solid #999;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -5242,8 +5292,11 @@ input[type="submit"].btn.btn-mini {
 }
 
 .modal-header {
+  background-color: #0794ca;
   padding: 9px 15px;
-  border-bottom: 1px solid #eee;
+   -webkit-box-shadow:  0px 1px 1px #222;
+     -moz-box-shadow:   0px 1px 1px #222;
+          box-shadow:  0px 1px 1px #222;
 }
 
 .modal-header .close {
@@ -5251,6 +5304,8 @@ input[type="submit"].btn.btn-mini {
 }
 
 .modal-header h3 {
+  color: #ffffff;
+  font-size: 15px;
   margin: 0;
   line-height: 30px;
 }
@@ -6217,6 +6272,18 @@ box-shadow: 0px 0px 1px #aaaaaa;
 
 }
 
+.encApp{
+  position: relative !important; 
+  top: auto !important; 
+  left: auto !important; 
+  
+  width: 100%;
+  margin:0 auto 0 auto;
+  background-color: #ffffff;
+box-shadow: 0px 0px 1px #aaaaaa;
+
+}
+
 .conWall img{
   width: 500px;
 }
@@ -6229,14 +6296,29 @@ box-shadow: 0px 0px 1px #aaaaaa;
 }
 
 .contenido{
+  padding-top: 20px;
+  margin:0 auto 0 auto;
+  width: 97%;
+  padding-bottom: 20px;
+}
+
+.contenidoBtn{
+  margin:0 0px 0 auto;
+  width: 30%;
+}
+
+.contenido2{
   margin:0 auto 0 auto;
   width: 97%;
   padding-bottom: 20px;
 }
 
 .cont2{
+  text-align: center;
   padding-top: 20px;
+  padding-bottom: 20px;
   padding-right: 30px;
+  padding-left: 30px;
 }
 
 .demo-row{
@@ -6248,9 +6330,33 @@ box-shadow: 0px 0px 8px #cccccc;
 }
 
 .tarjeta{
-  padding-top: 20px;
-  padding-bottom: 20px;
- width: 100%;
+  margin:0 auto 0 auto;
+  padding-top: 40px;
+  padding-bottom: 0px;
+ width: 90%;
 
+}
+
+.tarjeta2{
+font-size: 5px;
+
+}
+
+.unfixed { position: relative !important; top: auto !important; left: auto !important; }
+
+
+.accounts-form{
+  margin:0 auto 0 auto;
+  width: 80;
+  font-size: 10px;
+
+}
+
+.note{
+color: #000;
+}
+
+.actions{
+  width: 160px;
 }
 
