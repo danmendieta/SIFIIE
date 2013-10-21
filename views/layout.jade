@@ -2,5 +2,13 @@
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/cgfieStyle/bootstrap/css/bootstrap.css')
+    link(rel='stylesheet', href='/cgfieStyle/bootstrap/css/bootstrap-responsive.css')
+    link(rel='stylesheet', href='/cgfieStyle/css/flat-ui.css')
+    script(src="/javascripts/datatables/js/jquery.js")
+    script(src="/javascripts/datatables/js/jquery.dataTables.js")
+    script.      
+      $(document).ready(function() {
+        $('#escuelas').dataTable();
+      } );
   body!= body

@@ -1,0 +1,31 @@
+div(id="loginApp" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  div.modal-header
+    button(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+      x x
+    center
+      h3(id="myModalLabel")
+        Modal Accede a tu cuenta
+  div.modal-body
+    article
+      center
+        div.accounts-form(id="login")
+          form(action="/sessions", id="login-form", method="post", autocomplete="off")
+            div.all-errors
+              - if(typeof(message)!="undefined")
+               p#warn= message
+            div.input
+              input(type="text", placeholder="Usuario", name="usuario", maxlength="30", id="usuario", required="required" autofocus)
+            div.input
+              input(type="password", placeholder="Contraseña", name="password", id="password", required="required")
+            div.actions
+              input.btn.btn-block.btn-info(type="submit",value="Entrar")
+
+    
+
+          p.note
+            //a(href="/accounts/password/reset/") Olvidaste tu contraseña?
+            //&middot;
+            //a(href="/signup") Registrate 
+
+
+

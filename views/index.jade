@@ -1,3 +1,15 @@
-h1= title
-p Welcome to #{title}
-a(href="/sifiie") Acceder
+div!=partial('header')
+div.wall
+  div.encWall
+    div.row-fluid.show-grid
+      div.span9
+        img(src="images/enc2.png")
+      div.span3
+        div.cont2
+          a(href="#loginApp" role="button" class="btn btn-large btn-block btn-info" data-toggle="modal")
+            i.fui-radio-checked  &nbsp;Acceder
+ 
+  div.conWall
+    img(src="images/cgfie.png")
+div!=partial('session/newModal')
+div!=partial('js')
