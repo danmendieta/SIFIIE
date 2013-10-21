@@ -14,7 +14,7 @@ div(id="loginApp" class="modal hide fade" tabindex="-1" role="dialog" aria-label
               - if(typeof(message)!="undefined")
                p#warn= message
             div.input
-              input(type="text", placeholder="Usuario", name="usuario", maxlength="30", id="usuario", required="required")
+              input(type="text", placeholder="Usuario", name="usuario", maxlength="30", id="usuario", required="required" autofocus)
             div.input
               input(type="password", placeholder="Contraseña", name="password", id="password", required="required")
             div.actions
