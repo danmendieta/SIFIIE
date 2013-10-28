@@ -1,0 +1,93 @@
+div!=partial('../../layout.jade')
+div!=partial('../../headerApp.jade')
+  div.contenido
+    div.row-fluid.show-grid
+      div.span2
+        div!=partial('../../menu')
+        
+
+
+      div.span10
+        div.contenido2
+          div.demo-row
+            div.tarjeta
+         
+
+              div#registro-escuelas
+                form(action='/sifiie/escuelas/nuevo', method='POST')
+                  fieldset
+                    if(typeof(escuela_nueva)!="undefined")
+                        p #{escuela_nueva.message}
+                    input(type="text", placeholder="Clave Ejem: 1", id="clave", name="clave" required autofocus )
+                    input(type="text", placeholder="Nombre Escuela", id="nombre", name="nombre" required)
+                    input(type="text", placeholder="Siglas", id="siglas", name="siglas" required)
+                    select(title="obligatorio-Debes seleccionar la dependencia de la UAA." style="width: 280px;", id="dependencia", name="dependencia")
+                      option(value="")
+                      option(value="1" title="Unidades Administrativas") Unidades Administrativas
+                      option(value="2" title="Unidades Académicas de Nivel Medio Superior") Unidades Académicas de Nivel Medio Superior
+                      option(value="3" title="Unidades Académicas del Nivel Superior") Unidades Académicas del Nivel Superior
+                      option(value="4" title="Unidades Académicas de Investigación Científica y Tecnológica") Unidades Académicas de Investigación Científica y Tecnológica
+                      option(value="5" title="Unidades Académicas de Educación Continua") Unidades Académicas de Educación Continua
+                      option(value="6" title="Unidades Académicas de Apoyo Educativo") Unidades Académicas de Apoyo Educativo
+                      option(value="7" title="Unidades de Apoyo a la Innovación Educativa") Unidades de Apoyo a la Innovación Educativa
+                      option(value="8" title="Unidades de Apoyo a la Investigación, al Desarrollo y Fomento Tecnológico y Empresarial") Unidades de Apoyo a la Investigación, al Desarrollo y Fomento Tecnológico y Empresarial
+                      option(value="9" title="Clusters Politécnicos") Clusters Politécnicos
+                    input(type="text", placeholder="Responsable", id="responsable", name="responsable" required)
+                    input(type="text", placeholder="Cargo", id="cargo", name="cargo" required)
+                    input(type="text", placeholder="Dirección", id="direccion", name="direccion" required)
+                    input(type="text", placeholder="Coordenadas", id="coordenadas", name="coordenadas" required)
+                    div.contenidoBtn
+                      input(type="submit", value="Guardar" class="btn btn-large btn-block btn-info")
+
+     
+
+        -if(typeof(listaescuelas)!="undefined")    
+          div.contenido2
+            div.demo-row
+              div.tarjeta
+
+                  table#escuelas(border="0", cellpadding="0", cellspacing="0", class="tableED")
+                    thead
+                      tr
+                        td.hidden ID
+                        th Clave
+                        th Nombre
+                        th Siglas
+                        th Dependencias
+                        th Responsable
+                        th Cargo
+                        th.hidden Dirección
+                        th.hidden Coordenadas
+                        th Editar
+                        th Eliminar
+                    tbody
+                      each item in listaescuelas
+                        tr
+                          td.hidden #{item._id}
+                          td #{item.clave}  
+                          td #{item.nombre}  
+                          td #{item.siglas}  
+                          td 
+                            center #{item.dependencia}  
+                          td #{item.responsable}  
+                          td #{item.cargo}  
+                          td.hidden #{item.direccion}  
+                          td.hidden #{item.coordenadas}  
+                          td
+                            center
+                              a(href="#")
+                                i.fui-new 
+                          td
+                            center
+                              a(href="#")
+                                i.fui-trash 
+
+
+
+        div
+        div!=partial('../../js')
+
+div!=partial('../../footer')
+
+
+

@@ -5,13 +5,18 @@
 
 var express = require('express')
   , routes = require('./routes')
-var mongoose = require('mongoose');
-var db = mongoose.createConnection('108.166.84.122', 'SIFIIEDB');
+  
+  
+
+var mongoose = require('mongoose')
+var mongo = {};
+mongo.db =  mongoose.createConnection('108.166.84.122', 'SIFIIEDB');
+mongo.administracion= { }
 
 var app = module.exports = express.createServer();
 var MemoryStore= require('express/node_modules/connect/lib/middleware/session/memory');
 var crypto = require('crypto')
-var ObjectId = mongoose.Types.ObjectId
+
 
 
 // Configuration
@@ -30,22 +35,34 @@ var ObjectId = mongoose.Types.ObjectId
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
   });
-/*************************/
 
-  var EscuelasSchema = mongoose.Schema({
-    clave:                    Number,
-    nombre:               String,
-    siglas:                  String,
-    dependencia:        Number,
-    responsable:         String,
-    cargo:                   String,
-    direccion:              String,
-    coordenadas:        String,
-    fecha_registro:      {type: Date, default:Date.now}
-    
+    var UnidadSchema = mongoose.Schema({
+      clave:                    Number,
+      nombre:               String,
+      siglas:                  String,
+      dependencia:        Number,
+      responsable:         String,
+      cargo:                   String,
+      direccion:              String,
+      coordenadas:        String,
+      
+    });
+    mongo.administracion.unidades= mongo.db.model('escuelas',UnidadSchema);
+
+  var AcervoSchema = mongoose.Schema({
+      año:                    Number,
+      tipo:                    String,
+      miniatura:          { data: Buffer, contentType: String },
+      titulo:                 String,
+      descripcion:        String,
+      archivo_uno:      { data: Buffer, contentType: String },
+      archivo_dos:      { data: Buffer, contentType: String },
+      archivo_tres:      { data: Buffer, contentType: String },
+      archivo_cuatro:      { data: Buffer, contentType: String },
+      archivo_cinco:      { data: Buffer, contentType: String },
+      fecha_registro:      {type: Date, default:Date.now}    
   });
-  var EscuelasDB= db.model('escuelas',EscuelasSchema);
-
+  mongo.administracion.acervo = mongo.db.model ('acervo', AcervoSchema)
 
 
 /*********************   DYNAMICHELPERS  *******************************/
@@ -70,95 +87,69 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 
+
+
+
+
+
+
+
+
+
+
+
 app.get('/sifiie', protegido,  function (req, res){
   res.render('sifiie/index', { layout:false } )
 });
 
 
-app.get('/sifiie/escuelas', protegido,  function (req, res){
-    //Metodo que ejecuta la busqueda de todas las escuelas en la coleccion en MongoDB
-    EscuelasDB.find().lean().exec( function(error, results){        
-        if (error){
-            //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
-            res.render('sifiie/index', { layout:false, error:error } )
-            console.log(error);
-        }else {
-            //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
-            res.render('sifiie/index', { layout:false, listaescuelas:results } );
-            console.log(results);
+
+
+app.get('/sifiie/administracion/acervo', function (req, res){
+    AcervoDB.find().lean().exec( function(error, results){       
+        if(error){
+          res.render('sifiie/administracion/acervo/index', { layout:false, error:error } )
+        }else{
+          res.render('sifiie/administracion/acervo/index', { layout:false, tabla:results } )
         }
     });
 });
 
-app.post('/sifiie/escuelas/borrar', protegido, function (req, res){
-
-});
-
-app.post('/sifiie/escuelas/nuevo', protegido, function (req, res){
-  //Se genera el nuevo objeto que se va a insertar en la DB
-  var escuela_nueva =new EscuelasDB({
-    clave:                   req.param('clave'),
-    nombre:               req.param('nombre'),
-    siglas:                  req.param('siglas'),
-    dependencia:       req.param('dependencia'), //Number
-    responsable:        req.param('responsable'),
-    cargo:                  req.param('cargo'),
-    direccion:            req.param('direccion'),
-    coordenadas:      req.param('coordenadas')
+app.post('/sifiie/administracion/acervo/nuevo', function (req, res){
+  var acervo_nuevo =new  AcervoDB({
+    año:                   req.param('año'),
+    tipo:                   req.param('tipo'),
+    miniatura:          req.param('miniatura'),
+    titulo:                 req.param('titulo'),
+    descripcion:       req.param('descripcion'),
+    archivo_uno:      req.param('archivo_uno'),
+    archivo_dos:       req.param('archivo_dos'),
+    archivo_tres:      req.param('archivo_tres'),
+    archivo_cuatro:  req.param('archivo_cuatro'),
+    archivo_cinco:    req.param('archivo_cinco')
   });
-  //Mongoose cuenta con una funcion save que parte del objeto creado previamente
-  escuela_nueva.save( function (error){
-    if(!error){
-          EscuelasDB.find().lean().exec( function(error, results){        
-            if (!error){
-                //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
-                res.render('sifiie/index', { layout:false, error:error, escuela_nueva: {message: 'Error al guardar unidad' }  } )
-                console.log(error);
-            }else {
-                //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
-                res.render('sifiie/index', { layout:false, listaescuelas:results, escuela_nueva: {message: 'Escuela creada exitosamente' }  } );
-                console.log(results);
-            }
-        });
-       
+
+
+  acervo_nuevo.save( function (erro){
+    if(erro){  
+      AcervoDB.find().lean().exec( function(error, results){       
+          if(error){
+           res.render('sifiie/administracion/acervo/index', { layout:false, error:error } )
+          }else{
+           res.render('sifiie/administracion/acervo/index', { layout:false, error:erro ,tabla:results } )
+         }
+      });
     }else{
-
-          EscuelasDB.find().lean().exec( function(error, results){        
-            if (error){
-                //Si se encuentra un error asignarlo a una varible ERROR que se retorne a la vista 
-                res.render('sifiie/index', { layout:false, error:error, escuela_nueva: { error:'Error al guardar escuela | '+error}  } )
-                console.log(error);
-            }else {
-                //Si no existe error alguno, asignar el resultado de la busqueda a una varible global
-                res.render('sifiie/index', { layout:false, listaescuelas:results, escuela_nueva: {error:'Error al guardar escuela | '+error}  } );
-                console.log(results);
-            }
-        });
-      
+      AcervoDB.find().lean().exec( function(error, results){       
+          if(error){
+           res.render('sifiie/administracion/acervo/index', { layout:false, error:error } )
+          }else{
+           res.render('sifiie/administracion/acervo/index', { layout:false, tabla:results } )
+         }
+      });
     }
-  });
+  });//end save
 });
-
-app.post('/sifiie/escuelas/editar', function (req, res){
-  var escuela_actualizada = {
-    clave:                   req.param('clave'),
-    nombre:               req.param('nombre'),
-    siglas:                  req.param('siglas'),
-    dependencia:       req.param('dependencia'), //Number
-    responsable:        req.param('responsable'),
-    cargo:                  req.param('cargo'),
-    direccion:            req.param('direccion'),
-    coordenadas:      req.param('coordenadas')
-  }
-  EscuelasDB.update( {_id:req.param('id') }, escuela_actualizada).exec( function ( error, total_afectaciones) {
-    if(!error){
-      res.send
-    }else{
-
-    }
-  });
-});
-
 
 
 /*
@@ -174,6 +165,7 @@ app.get('/session/new', function(req,res){// New Session
     }
   })
 });
+
 
   app.get('/sessions/destroy', function(req,res){//Destroy session 
     delete req.session.user;
@@ -210,6 +202,12 @@ app.get('/session/new', function(req,res){// New Session
       res.redirect('/session/new?redir='+req.url);
     }
   }
+
+
+
+require('./routes/administracion/acervo.js')(app, mongo.administracion.acervo);
+require('./routes/administracion/unidades.js')(app, mongo.administracion.unidades);
+require('./routes/administracion/noticias.js')(app, mongo.administracion.noticias);
 
 
 
